@@ -25,6 +25,11 @@ function onReady() {
             window.location = 'http://www.google.com';
         }
     });
+
+    var resetButton = document.getElementById('reset-button');
+    resetButton.addEventListener('click', function() {
+        document.getElementById('age-message').style.display = 'none';
+    });
 } //onReady()
 
 //call onReady() when the DOMContentLoaded event is raised
@@ -90,6 +95,20 @@ function calculateAge(dob) {
         throw new Error('Please tell me when you were born!');
     }
     //calculate the person's age based on the date-of-birth
+    /*
+    var today = new Date();
+    dob = new Date(dob);
+    var yearsDiff = today.getFullYear() - dob.getUTCFullYear();
+    var monthsDiff = today.getMonth() - dob.getUTCMonth();
+    var daysDiff = today.getDate() - dob.getUTCDate();
+
+    if (monthsDiff < 0 || (0 === monthsDiff && daysDiff < 0)) {
+        yearsDiff--;
+    }
+
+    return yearsDiff;
+    */
+    return moment().diff(dob, 'years');
 
 } //calculateAge()
 
@@ -100,7 +119,12 @@ function calculateAge(dob) {
  *   name - [string] name of person
  *   age - [number or string] age of person
  * */
-function displayAge(name, age) {
+
+ function displayAge(name, age) {
+    var nameRegEx = new RegExp('^\\D+$');
+     if (!nameRegEx.test(name)) {
+         throw new Error('Your name cannot contain numbers!');
+     }
     //use displayMessage() to display the name and age
     displayMessage(name + ', you are ' + age + ' year old!');
 
@@ -129,4 +153,5 @@ function displayMessage(message, isError) {
     var msgElem = document.getElementById('age-message');
     msgElem.innerHTML = message;
     msgElem.className = isError ? 'alert alert-danger' : 'alert alert-success';
+    msgElem.style.display = 'block';
 } //displayMessage()
