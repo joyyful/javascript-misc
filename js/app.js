@@ -16,6 +16,9 @@ function onReady() {
     var ageForm = document.getElementById('age-form');
     //add an event listener for the 'submit' event passing onSubmit as the event handler function
     ageForm.addEventListener('submit', onSubmit);
+    if (window.localStorage) {
+        ageForm.elements['name'].value = window.localStorage.getItem('defaultName');
+    }
 
     //add an event listener for the 'click' event on the exit button
     //for this one we will use an inline anonymous function so that you can get used to those
@@ -29,6 +32,13 @@ function onReady() {
     var resetButton = document.getElementById('reset-button');
     resetButton.addEventListener('click', function() {
         document.getElementById('age-message').style.display = 'none';
+    });
+
+    var nameInput = ageForm.elements['name'];
+    nameInput.addEventListener('change', function() {
+       if (window.localStorage) {
+           window.localStorage.setItem('defaultName', this.value);
+       }
     });
 } //onReady()
 
